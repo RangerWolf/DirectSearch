@@ -1,0 +1,14 @@
+{
+
+    "extName" :{
+        "message": "搜索直达"
+    },
+    "extDesc" : {
+        "message": "搜索点击直达！删除搜索引擎自带的重定向，加速上网。"
+    },
+    
+    "w_rd_removed" : {
+        "message": "重定向已删除"
+    }
+
+}

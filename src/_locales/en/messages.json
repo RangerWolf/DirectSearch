@@ -1,0 +1,15 @@
+﻿{
+
+    "extName" :{
+        "message": "Faster Search for Google/Yahoo"
+    },
+    "extDesc" : {
+        "message": "Remove redirection for Search Engine, including Google/Yahoo"
+    },
+    
+    "w_rd_removed" : {
+        "message": "Redirection removed"
+    }
+  
+
+}
