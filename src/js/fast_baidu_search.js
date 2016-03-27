@@ -9,15 +9,23 @@ timerForBaiduSearch = self.setInterval("rmRedirect()",timerForBaiduSearchInterva
 console.log("Enter baidu search...")
 
 lastUrl = ""
+title = ""
 
 function rmRedirect() {
 	cur_page = window.location.href
-
+	cur_title = document.title
+	
 	links = document.querySelectorAll('#content_left div.result h3 a')
-
-	if(links.length > 0 && cur_page != lastUrl) {
-		lastUrl = cur_page
-		replaceLink()
+	
+	
+	//if(links.length > 0 && cur_page != lastUrl) {
+	if(links.length > 0 && cur_title != title) {
+		//lastUrl = cur_page
+		console.log("!!! new title:" + cur_title)
+		title = cur_title
+		clean_title = title.replace("_百度搜索", "")
+		console.log("!!! search wd:" + clean_title)
+		replaceLink(clean_title)
 	} 		
 }
 
@@ -28,7 +36,7 @@ function clearLoopTimer(timer) {
 	}
 }
 
-function replaceLink() {
+function replaceLink(title) {
 
 	page_link = window.location.href;
 
@@ -55,8 +63,13 @@ function replaceLink() {
 			arr[i] = "tn=baidulocal"
 		}
 
+		// 如果需要更换搜索词 （比如输入有错误的时候) 就使用系统自动提示的词
 		if(tmp.startsWith("wd=") && needReplaceWd == true) {
 			arr[i] = "wd=" + encodeURIComponent(newSearchWd)
+		} 
+		// 否则使用title
+		if(tmp.startsWith("wd=") && needReplaceWd == false) {
+			arr[i] = "wd=" + encodeURIComponent(title)
 		}
 	}
 	ajax_page_link = page_host + "?" + arr.join("&")
@@ -79,8 +92,6 @@ function replaceLink() {
 	  		tmpHref = direct_links[i].href
 	  		tmpText = direct_links[i].text
 	  		tmpText = $.trim(tmpText)
-			
-			console.log(tmpText + ":\t" + tmpHref)
 			
 			// 此处将搜索结果的标题以及最终url都放在key之中，
 			// 这样在使用的时候就可以根据域名进行简单过滤，
@@ -109,28 +120,63 @@ function replaceLink() {
 			if(showUrl != null && showUrl != undefined) {
 				showUrlTxt = showUrl.text
 			} 
-			
-			showUrlTxt = showUrlTxt.replace("...", "")
 			showUrlTxt = $.trim(showUrlTxt)
+			console.log("$$" + showUrlTxt)
 			
-			tmpHref = originLink.href
-	  		tmpText = originLink.textContent
-	  		tmpText = $.trim(tmpText)
-			
-			tmpKey = tmpText + "_" + showUrlTxt
-			
-			// 这里采用了一个不太高效的循环遍历，但是好在数据量很小
-			for(var resultKey in directResultArr) {
-				console.log("result key:" + resultKey)
-				console.log("target key:" + tmpKey)
+			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com/") == -1) {
+				// 如果url没有被截断并且非百度自有域名
+				// 直接使用完整的url来替换
+				//console.log("%%" + showUrlTxt)
+				originLink.href = "//" + showUrlTxt
+				originLink.style.color = 'orange'
+			} 
+			else if(showUrlTxt.startsWith("zhidao.baidu.com") ){
+				// 百度知道url 特殊处理
+				baiduComIdx = showUrl.href.indexOf("baidu.com/")
+				linkVal = showUrl.href.substring(baiduComIdx + "baidu.com/".length)
+				console.log("###############" + linkVal)
+				originLink.href = "http://zhidao.baidu.com/" + linkVal
+				originLink.style.color = 'yellow'
+			}
+			else if(showUrlTxt.startsWith("baike.baidu.com") ){
+				// 百度知道url 特殊处理
+				baiduComIdx = showUrl.href.indexOf("baidu.com/")
+				linkVal = showUrl.href.substring(baiduComIdx + "baidu.com/".length)
+				console.log("###############" + linkVal)
+				originLink.href = "http://baike.baidu.com/" + linkVal
+				originLink.style.color = 'yellow'
+			}
+			else {
+				// 其他url 还是使用ajax result 替换
+				showUrlTxt = showUrlTxt.replace("...", "")
+				showUrlTxt = $.trim(showUrlTxt)
+				
+				tmpHref = originLink.href
+				tmpText = originLink.textContent
+				tmpText = $.trim(tmpText)
+				
+				tmpKey = tmpText + "_" + showUrlTxt
+				
+				// 这里采用了一个不太高效的循环遍历，但是好在数据量很小
+				for(var resultKey in directResultArr) {
+					// console.log("result key:" + resultKey)
+					// console.log("target key:" + tmpKey)
 
-				if(resultKey.startsWith(tmpKey)) {					
-					originLink.href = directResultArr[resultKey]
-					console.log(tmpText + "\t" + tmpHref)
-					directLinksCnt++
-					break;
+					if(resultKey.startsWith(tmpKey)) {					
+						originLink.href = directResultArr[resultKey]
+						originLink.style.color = 'green'
+						//console.log(tmpText + "\t" + tmpHref)
+						directLinksCnt++
+						break;
+					}
 				}
 			}
+			
+			
+			
+			
+			
+			
 	  	}
 
 	  	console.log("direct links count:" + directLinksCnt)
