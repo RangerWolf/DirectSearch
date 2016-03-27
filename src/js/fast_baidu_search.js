@@ -79,28 +79,58 @@ function replaceLink() {
 	  		tmpHref = direct_links[i].href
 	  		tmpText = direct_links[i].text
 	  		tmpText = $.trim(tmpText)
-	  		directResultArr[tmpText] = tmpHref
+			
+			console.log(tmpText + ":\t" + tmpHref)
+			
+			// 此处将搜索结果的标题以及最终url都放在key之中，
+			// 这样在使用的时候就可以根据域名进行简单过滤，
+			// 避免因为标题相同而造成错乱
+			// 但是还是无法避免如果同一个域名下的搜索结果标题也相同的情况
+			keyHref = ""
+			if(tmpHref.startsWith("http://"))
+				keyHref = tmpHref.replace("http://", "")
+			else if(tmpHref.startsWith("https://"))
+				keyHref = tmpHref.replace("https://", "")
+			key = tmpText + "_" + keyHref
+
+	  		directResultArr[key] = tmpHref
 	  		
 	  	}
 
-
-
-
-	  	normal_links = document.querySelectorAll('#content_left div.result h3 a')
-	  	console.log("normal links count:" + normal_links.length)
+		result_div = document.querySelectorAll('#content_left div.result')
+		
 	  	var directLinksCnt = 0
-	  	for(var i = 0; i < normal_links.length; i++) {
-	  		// normal_links[i].href = direct_links[2 * i].href
-
-	  		tmpHref = normal_links[i].href
-	  		tmpText = normal_links[i].textContent
+	  	for(var i = 0; i < result_div.length; i++) {
+			
+			originLink = result_div[i].querySelector("h3 a")
+			showUrl    = result_div[i].querySelector(".c-showurl")
+			showUrlTxt = ""
+			// 暂时没有去解析内部的div.g里面的showurl
+			if(showUrl != null && showUrl != undefined) {
+				showUrlTxt = showUrl.text
+			} 
+			
+			showUrlTxt = showUrlTxt.replace("...", "")
+			showUrlTxt = $.trim(showUrlTxt)
+			
+			tmpHref = originLink.href
+	  		tmpText = originLink.textContent
 	  		tmpText = $.trim(tmpText)
+			
+			tmpKey = tmpText + "_" + showUrlTxt
+			
+			// 这里采用了一个不太高效的循环遍历，但是好在数据量很小
+			for(var resultKey in directResultArr) {
+				console.log("result key:" + resultKey)
+				console.log("target key:" + tmpKey)
 
-	  		if(tmpText in directResultArr) {
-	  			normal_links[i].href = directResultArr[tmpText]
-	  			console.log(tmpText + "\t" + tmpHref)
-	  			directLinksCnt++
-	  		}
+				if(resultKey.startsWith(tmpKey)) {					
+					originLink.href = directResultArr[resultKey]
+					console.log(tmpText + "\t" + tmpHref)
+					directLinksCnt++
+					break;
+				}
+			}
 	  	}
 
 	  	console.log("direct links count:" + directLinksCnt)
