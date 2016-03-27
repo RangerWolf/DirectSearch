@@ -134,17 +134,17 @@ function replaceLink(title) {
 				// 百度知道url 特殊处理
 				baiduComIdx = showUrl.href.indexOf("baidu.com/")
 				linkVal = showUrl.href.substring(baiduComIdx + "baidu.com/".length)
-				console.log("###############" + linkVal)
+				//console.log("###############" + linkVal)
 				originLink.href = "http://zhidao.baidu.com/" + linkVal
-				originLink.style.color = 'yellow'
+				//originLink.style.color = 'yellow'
 			}
 			else if(showUrlTxt.startsWith("baike.baidu.com") ){
 				// 百度知道url 特殊处理
 				baiduComIdx = showUrl.href.indexOf("baidu.com/")
 				linkVal = showUrl.href.substring(baiduComIdx + "baidu.com/".length)
-				console.log("###############" + linkVal)
+				//console.log("###############" + linkVal)
 				originLink.href = "http://baike.baidu.com/" + linkVal
-				originLink.style.color = 'yellow'
+				//originLink.style.color = 'yellow'
 			}
 			else {
 				// 其他url 还是使用ajax result 替换
@@ -164,8 +164,7 @@ function replaceLink(title) {
 
 					if(resultKey.startsWith(tmpKey)) {					
 						originLink.href = directResultArr[resultKey]
-						originLink.style.color = 'green'
-						//console.log(tmpText + "\t" + tmpHref)
+						//originLink.style.color = 'green'
 						directLinksCnt++
 						break;
 					}
