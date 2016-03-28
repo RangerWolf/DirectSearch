@@ -128,7 +128,7 @@ function replaceLink(title) {
 				// 直接使用完整的url来替换
 				//console.log("%%" + showUrlTxt)
 				originLink.href = "//" + showUrlTxt
-				originLink.style.color = 'orange'
+				// originLink.style.color = 'orange'
 			} 
 			else if(showUrlTxt.startsWith("zhidao.baidu.com") ){
 				// 百度知道url 特殊处理
