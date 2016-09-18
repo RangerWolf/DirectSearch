@@ -127,7 +127,11 @@ function replaceLink(title) {
 				// 如果url没有被截断并且非百度自有域名
 				// 直接使用完整的url来替换
 				//console.log("%%" + showUrlTxt)
-				originLink.href = "http://" + showUrlTxt
+				if(showUrlTxt.indexOf("https://") == -1 && showUrlTxt.indexOf("http://") == -1)
+					originLink.href = "http://" + showUrlTxt
+				else {
+					originLink.href = showUrlTxt
+				}
 				// originLink.style.color = 'orange'
 			} 
 			else if(showUrlTxt.startsWith("zhidao.baidu.com") ){
