@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extName__",
-	"version": "1.4.2.4",
+	"version": "1.4.3.0",
 	"description": "__MSG_extDesc__",
 	"permissions": [
 		"notifications",

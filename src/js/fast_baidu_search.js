@@ -46,6 +46,7 @@ function replaceLink(title) {
 	arr = page_param.split("&")
 
 	containsTn = false
+	containsRn = false
 	needReplaceWd = false
 	newSearchWd = ""
 	hit_top_new = document.querySelectorAll("div.hit_top_new")
@@ -70,11 +71,20 @@ function replaceLink(title) {
 		if(tmp.startsWith("wd=") && needReplaceWd == false) {
 			arr[i] = "wd=" + encodeURIComponent(title)
 		}
+
+		// 设置rn=50 加大获取到真实链接的概率
+		if(tmp.startsWith("rn=")) {
+			containsRn = true
+			arr[i] = "rn=50"
+		}
 	}
 	ajax_page_link = page_host + "?" + arr.join("&")
 
 	if(containsTn == false)
 		ajax_page_link = ajax_page_link + "&tn=baidulocal"
+
+	if(containsRn == false)
+		ajax_page_link = ajax_page_link + "&rn=50"
 
 	console.log("source page:" + ajax_page_link)
 	$.ajax({
