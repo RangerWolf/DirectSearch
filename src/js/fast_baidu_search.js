@@ -103,7 +103,7 @@ function replaceLink(title) {
 			else if(tmpHref.startsWith("https://"))
 				keyHref = tmpHref.replace("https://", "")
 			key = tmpText + "_" + keyHref
-
+			console.log("@@@" + key)
 	  		directResultArr[key] = tmpHref
 	  		
 	  	}
@@ -115,13 +115,23 @@ function replaceLink(title) {
 			
 			originLink = result_div[i].querySelector("h3 a")
 			showUrl    = result_div[i].querySelector(".c-showurl")
+			showUrl_g  = result_div[i].querySelector(".g")
+
 			showUrlTxt = ""
 			// 暂时没有去解析内部的div.g里面的showurl
 			if(showUrl != null && showUrl != undefined) {
 				showUrlTxt = showUrl.text
-			} 
+			} else if(showUrl_g != null && showUrl_g != undefined) {
+				showUrlTxt = showUrl_g.textContent
+				if(showUrlTxt != null) {
+					// Sample: www.iqiyi.com/yinyue/201...  - 百度快照
+					showUrlTxt = showUrlTxt.replace("  - 百度快照", "")
+				}
+				console.log("$$" + showUrlTxt)
+			}
+			
 			showUrlTxt = $.trim(showUrlTxt)
-			console.log("$$" + showUrlTxt)
+			
 			
 			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com/") == -1) {
 				// 如果url没有被截断并且非百度自有域名
