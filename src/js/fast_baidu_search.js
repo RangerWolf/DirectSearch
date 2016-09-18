@@ -77,6 +77,14 @@ function replaceLink(title) {
 			containsRn = true
 			arr[i] = "rn=50"
 		}
+
+		if(tmp.startsWith("pn=")) {
+			pnStr = tmp.replace("pn=", "")
+			pnVal = parseInt(pnStr) - 10
+			if(pnVal < 0)
+				pnVal = 0
+			arr[i] = "pn=" + pnVal
+		}
 	}
 	ajax_page_link = page_host + "?" + arr.join("&")
 
