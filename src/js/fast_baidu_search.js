@@ -18,9 +18,8 @@ function rmRedirect() {
 	links = document.querySelectorAll('#content_left div.result h3 a')
 	
 	
-	//if(links.length > 0 && cur_page != lastUrl) {
-	if(links.length > 0 && cur_title != title) {
-		//lastUrl = cur_page
+	if(links.length > 0 && (cur_title != title || cur_page != lastUrl) ) {
+		lastUrl = cur_page
 		console.log("!!! new title:" + cur_title)
 		title = cur_title
 		clean_title = title.replace("_百度搜索", "")
@@ -82,7 +81,6 @@ function replaceLink(title) {
   		url: ajax_page_link,
   		context: document.body
 	}).done(function(data) {
-
 	  	direct_links = $(data).find("td.f a[href]")
 
 	  	directResultArr = new Array(direct_links.length / 2);
@@ -103,7 +101,6 @@ function replaceLink(title) {
 			else if(tmpHref.startsWith("https://"))
 				keyHref = tmpHref.replace("https://", "")
 			key = tmpText + "_" + keyHref
-			console.log("@@@" + key)
 	  		directResultArr[key] = tmpHref
 	  		
 	  	}
@@ -127,7 +124,6 @@ function replaceLink(title) {
 					// Sample: www.iqiyi.com/yinyue/201...  - 百度快照
 					showUrlTxt = showUrlTxt.replace("  - 百度快照", "")
 				}
-				console.log("$$" + showUrlTxt)
 			}
 			
 			showUrlTxt = $.trim(showUrlTxt)
