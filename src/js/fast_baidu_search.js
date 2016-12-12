@@ -199,10 +199,12 @@ function replaceLink(title) {
 				}
 			}
 			
-			
-			
-			
-			
+			// 如果存在缩略图，则把缩略图里面的链接也替换掉
+			thumbnail_link = result_div[i].querySelector("a.c-img6")
+			if(thumbnail_link != null && thumbnail_link != undefined) {
+				console.log("图片链接替换..." + originLink.href)
+				thumbnail_link.href = originLink.href
+			}
 			
 	  	}
 
