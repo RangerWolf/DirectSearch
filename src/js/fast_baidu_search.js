@@ -99,7 +99,7 @@ function replaceLink(title) {
   		url: ajax_page_link,
   		context: document.body
 	}).done(function(data) {
-	  	direct_links = $(data).find("td.f a[href]")
+		direct_links = $(data).find("td.f a[href]")
 
 	  	directResultArr = new Array(direct_links.length / 2);
 
@@ -118,17 +118,19 @@ function replaceLink(title) {
 				keyHref = tmpHref.replace("http://", "")
 			else if(tmpHref.startsWith("https://"))
 				keyHref = tmpHref.replace("https://", "")
-			key = tmpText + "_" + keyHref
+			key = tmpText + "_" + decodeURI(keyHref)
 	  		directResultArr[key] = tmpHref
 	  		
 	  	}
 
-		result_div = document.querySelectorAll('#content_left div.result')
+		result_div = document.querySelectorAll('#content_left div.c-container')
+
 		
 	  	var directLinksCnt = 0
 	  	for(var i = 0; i < result_div.length; i++) {
 			
 			originLink = result_div[i].querySelector("h3 a")
+			originText = result_div[i].querySelector("h3 a").textContent
 			showUrl    = result_div[i].querySelector(".c-showurl")
 			showUrl_g  = result_div[i].querySelector(".g")
 
@@ -136,6 +138,9 @@ function replaceLink(title) {
 			// 暂时没有去解析内部的div.g里面的showurl
 			if(showUrl != null && showUrl != undefined) {
 				showUrlTxt = showUrl.text
+				if(showUrlTxt == undefined || showUrlTxt == null) {
+					showUrlTxt = showUrl.innerHTML
+				}
 			} else if(showUrl_g != null && showUrl_g != undefined) {
 				showUrlTxt = showUrl_g.textContent
 				if(showUrlTxt != null) {
@@ -145,7 +150,8 @@ function replaceLink(title) {
 			}
 			
 			showUrlTxt = $.trim(showUrlTxt)
-			
+			if(showUrlTxt == null || showUrlTxt == undefined || showUrlTxt.length == 0) 
+				continue
 			
 			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com/") == -1) {
 				// 如果url没有被截断并且非百度自有域名
@@ -158,32 +164,22 @@ function replaceLink(title) {
 				}
 				// originLink.style.color = 'orange'
 			} 
-			else if(showUrlTxt.startsWith("zhidao.baidu.com") ){
-				// 百度知道url 特殊处理
-				baiduComIdx = showUrl.href.indexOf("baidu.com/")
-				linkVal = showUrl.href.substring(baiduComIdx + "baidu.com/".length)
-				//console.log("###############" + linkVal)
-				originLink.href = "http://zhidao.baidu.com/" + linkVal
-				//originLink.style.color = 'yellow'
-			}
-			else if(showUrlTxt.startsWith("baike.baidu.com") ){
-				// 百度知道url 特殊处理
-				baiduComIdx = showUrl.href.indexOf("baidu.com/")
-				linkVal = showUrl.href.substring(baiduComIdx + "baidu.com/".length)
-				//console.log("###############" + linkVal)
-				originLink.href = "http://baike.baidu.com/" + linkVal
-				//originLink.style.color = 'yellow'
-			}
 			else {
 				// 其他url 还是使用ajax result 替换
 				showUrlTxt = showUrlTxt.replace("...", "")
 				showUrlTxt = $.trim(showUrlTxt)
-				
+				baiduDotComIndex = showUrlTxt.indexOf("baidu.com")
+				if(baiduDotComIndex > 0 ) {
+					showUrlTxt = showUrlTxt.substring(0, baiduDotComIndex + "baidu.com".length)
+				}
+
+
 				tmpHref = originLink.href
 				tmpText = originLink.textContent
 				tmpText = $.trim(tmpText)
 				
 				tmpKey = tmpText + "_" + showUrlTxt
+				console.log("tmpKey=" + tmpKey)
 				
 				// 这里采用了一个不太高效的循环遍历，但是好在数据量很小
 				for(var resultKey in directResultArr) {
@@ -192,7 +188,7 @@ function replaceLink(title) {
 
 					if(resultKey.startsWith(tmpKey)) {					
 						originLink.href = directResultArr[resultKey]
-						//originLink.style.color = 'green'
+						// originLink.style.color = 'red'
 						directLinksCnt++
 						break;
 					}
