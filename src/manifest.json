@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extName__",
-	"version": "1.4.4.0",
+	"version": "1.4.5.0",
 	"description": "__MSG_extDesc__",
 	"permissions": [
 		"notifications",
@@ -58,7 +58,7 @@
         },
         {
             "js": [ "js/jquery-2.1.0.min.js", "js/fast_360_search.js" ],
-            "matches": [ "http://www.haosou.com/s?*","https://www.haosou.com/s?*" ],
+            "matches": [ "http://www.haosou.com/s?*","https://www.haosou.com/s?*","https://www.so.com/s?*" ],
             "run_at": "document_end"
         }
     ]

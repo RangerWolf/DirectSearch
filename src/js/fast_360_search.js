@@ -33,8 +33,9 @@ function rmRedirect() {
 
 function extractRealUrl(redirectUrl) {
 
-	if(redirectUrl.indexOf("www.haosou.com/link?") > 0 &&
-		redirectUrl.indexOf("url=") > 0) {
+	if( (redirectUrl.indexOf("www.haosou.com/link?") > 0 ||
+		 redirectUrl.indexOf("www.so.com/link?") > 0
+		) && redirectUrl.indexOf("url=") > 0) {
 
 		var paramPart = redirectUrl.split("?")[1]
 		var params = paramPart.split("&")
