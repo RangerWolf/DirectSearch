@@ -129,8 +129,7 @@ function replaceLink(title) {
 	  	var directLinksCnt = 0
 	  	for(var i = 0; i < result_div.length; i++) {
 			
-			originLink = result_div[i].querySelector("h3 a")
-			originText = result_div[i].querySelector("h3 a").textContent
+			originLink = result_div[i].querySelector("h3 a")			
 			showUrl    = result_div[i].querySelector(".c-showurl")
 			showUrl_g  = result_div[i].querySelector(".g")
 
@@ -153,7 +152,7 @@ function replaceLink(title) {
 			if(showUrlTxt == null || showUrlTxt == undefined || showUrlTxt.length == 0) 
 				continue
 			
-			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com/") == -1) {
+			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com") == -1) {
 				// 如果url没有被截断并且非百度自有域名
 				// 直接使用完整的url来替换
 				//console.log("%%" + showUrlTxt)
