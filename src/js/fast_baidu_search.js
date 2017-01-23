@@ -129,6 +129,10 @@ function replaceLink(title) {
 	  	var directLinksCnt = 0
 	  	for(var i = 0; i < result_div.length; i++) {
 			
+			// 头部特殊标注的新闻 暂时无法处理 会误操作
+	  		if($(result_div[i]).hasClass("xpath-log"))
+	  			continue
+
 			originLink = result_div[i].querySelector("h3 a")			
 			showUrl    = result_div[i].querySelector(".c-showurl")
 			showUrl_g  = result_div[i].querySelector(".g")
