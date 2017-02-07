@@ -156,8 +156,9 @@ function replaceLink(title) {
 			if(showUrlTxt == null || showUrlTxt == undefined || showUrlTxt.length == 0) 
 				continue
 			
-			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com") == -1) {
+			if( showUrlTxt.indexOf("...") == -1 && showUrlTxt.indexOf("baidu.com") == -1 && showUrlTxt.indexOf(" ") == -1) {
 				// 如果url没有被截断并且非百度自有域名
+				// 2017-02-07 有的URL并不是真实的URL，比如：“www.xcar.com.cn 2017-02-07” 这种格式的就不能替换
 				// 直接使用完整的url来替换
 				//console.log("%%" + showUrlTxt)
 				if(showUrlTxt.indexOf("https://") == -1 && showUrlTxt.indexOf("http://") == -1)
