@@ -169,8 +169,8 @@ function replaceLink(title) {
 				// originLink.style.color = 'orange'
 			} 
 			else {
-				// 其他url 还是使用ajax result 替换
-				showUrlTxt = showUrlTxt.replace(/\.\.\..*/, "")
+				// 其他url 还是使用ajax result 替换，去除部分链接中https前缀，避免替换失败
+				showUrlTxt = showUrlTxt.replace(/\.\.\..*/, "").replace("https://","")
 				showUrlTxt = $.trim(showUrlTxt)
 				baiduDotComIndex = showUrlTxt.indexOf("baidu.com")
 				if(baiduDotComIndex > 0 ) {
