@@ -12,8 +12,8 @@ setTimeout(rmGoogleRedirect,1600)
 timerForGoogleSearch = self.setInterval("rmGoogleRedirect()",timerForGoogleSearchInterval)
 
 function rmGoogleRedirect() {
-	links_web = 		document.querySelectorAll('h3.r a[href][onmousedown]')
-	links_news_in_web = document.querySelectorAll("#rso a[href][onmousedown]")
+	links_web = 		document.querySelectorAll('h3.r a[href][ping]')
+	links_news_in_web = document.querySelectorAll("#rso a[href][ping]")
 	links_img_title = 	document.querySelectorAll("._LAd a[href^='http']")
 	links_img_btns  =	document.querySelectorAll(".irc_butc a")
 	links = []
